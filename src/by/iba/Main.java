@@ -9,11 +9,20 @@ public class Main {
     public static String inPath = "C:/Users/Razumava_M/IdeaProjects/Data/";
 
     public static void main(String[] args) {
-        XMLParser parser = new XMLParser("ACTSTAT", inPath, outPath);
-        if(parser.parseToCSV()) {
+        XMLParser parser = new XMLParser();
+        if(parser.parseToCSV("ACTSTAT", inPath, outPath)) {
             try {
                 MySQLConnection database = new MySQLConnection();
                 database.readToDB("ACTSTAT", outPath);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        if(parser.parseToCSV("DEL_ADDROBJ", inPath, outPath)) {
+            try {
+               MySQLConnection database = new MySQLConnection();
+               database.readToDB("DEL_ADDROBJ", outPath);
             } catch (Exception e){
                 e.printStackTrace();
             }

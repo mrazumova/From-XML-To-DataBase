@@ -15,26 +15,16 @@ import java.io.IOException;
 
 public class XMLParser {
 
-    private File stylesheet;
-    private File inFile;
-    private File outFile;
-
-    public XMLParser(String dataName, String inPath, String outPath) {
-        setStylesheet("src/" + dataName + ".xsl");
-        setInFile(inPath + dataName + ".xml");
-        setOutFile(outPath + dataName + ".csv");
-    }
-
-    public boolean parseToCSV(){
+    public boolean parseToCSV(String dataName, String inPath, String outPath){
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(inFile);
+            Document document = builder.parse(new File((inPath + dataName + ".xml")));
 
-            StreamSource stylesource = new StreamSource(stylesheet);
+            StreamSource stylesource = new StreamSource(new File("src/" + dataName + ".xsl"));
             Transformer transformer = TransformerFactory.newInstance().newTransformer(stylesource);
             Source source = new DOMSource(document);
-            Result outputTarget = new StreamResult(outFile);
+            Result outputTarget = new StreamResult(new File(outPath + dataName + ".csv"));
             transformer.transform(source, outputTarget);
         }catch (Exception e){
             e.printStackTrace();
@@ -42,15 +32,4 @@ public class XMLParser {
         return true;
     }
 
-    public void setInFile(String inFile) {
-        this.inFile = new File(inFile);
-    }
-
-    public void setOutFile(String outFile) {
-        this.outFile = new File(outFile);
-    }
-
-    public void setStylesheet(String stylesheet) {
-        this.stylesheet = new File(stylesheet);
-    }
 }

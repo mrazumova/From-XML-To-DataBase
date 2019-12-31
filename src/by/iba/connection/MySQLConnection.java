@@ -17,8 +17,6 @@ public class MySQLConnection {
     private Connection connection;
     private Statement statement;
 
-
-
     public MySQLConnection() throws Exception{
         Class.forName("com.mysql.cj.jdbc.Driver");
         connection = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -26,7 +24,6 @@ public class MySQLConnection {
     }
 
     public void readToDB(String table, String path){
-        createTable();
         try {
             String sql = "LOAD DATA INFILE '" + path + table + ".csv'" + " INTO TABLE " + table +
                     " COLUMNS TERMINATED BY ','" +
@@ -39,17 +36,4 @@ public class MySQLConnection {
         }
     }
 
-    private void createTable() {
-            try{
-            String sql = "CREATE TABLE IF NOT EXISTS ACTSTAT" +
-                    "(" +
-                    "    `ACTSTATID` decimal(24,5) DEFAULT NULL," +
-                    "    `NAME` varchar(100) DEFAULT NULL" +
-                    ")DEFAULT CHARSET=utf8;";
-
-            statement.executeUpdate(sql);
-        } catch (SQLException e){
-            System.out.println("Error while creating a table.");
-        }
-    }
 }
