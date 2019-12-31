@@ -1,5 +1,8 @@
 package by.iba.connection;
 
+import by.iba.parser.XMLParser;
+
+import javax.swing.table.TableCellEditor;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -22,14 +25,12 @@ public class MySQLConnection {
         statement = connection.createStatement();
     }
 
-    public void readToDB(){
+    public void readToDB(String table, String path){
         createTable();
-
         try {
-            String sql = "LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/ACTSTAT.csv' INTO TABLE ACTSTAT " +
-                    "COLUMNS TERMINATED BY ',' " +
-
-                    "LINES TERMINATED BY '\\N';";
+            String sql = "LOAD DATA INFILE '" + path + table + ".csv'" + " INTO TABLE " + table +
+                    " COLUMNS TERMINATED BY ','" +
+                    " LINES TERMINATED BY '\\r\n';";
 
             System.out.println(statement.executeUpdate(sql));
         } catch(SQLException e){

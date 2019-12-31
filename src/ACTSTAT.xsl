@@ -4,7 +4,7 @@
     <xsl:template match="/">
         <xsl:for-each select="/ActualStatuses/ActualStatus">
             <td>
-                <xsl:value-of select="concat(@ACTSTATID, ',' ,@NAME, '\\N')"/>
+                <xsl:value-of select="concat(@ACTSTATID, ',' ,@NAME, '&#xA;')"/>
             </td>
 
         </xsl:for-each>

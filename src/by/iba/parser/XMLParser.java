@@ -14,14 +14,15 @@ import java.io.File;
 import java.io.IOException;
 
 public class XMLParser {
+
     private File stylesheet;
     private File inFile;
     private File outFile;
 
-    public XMLParser(String stylesheet, String inFile, String outFile) {
-        setStylesheet(stylesheet);
-        setInFile(inFile);
-        setOutFile(outFile);
+    public XMLParser(String dataName, String inPath, String outPath) {
+        setStylesheet("src/" + dataName + ".xsl");
+        setInFile(inPath + dataName + ".xml");
+        setOutFile(outPath + dataName + ".csv");
     }
 
     public boolean parseToCSV(){
