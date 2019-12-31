@@ -1,6 +1,5 @@
 package by.iba.connection;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,18 +22,16 @@ public class MySQLConnection {
         statement = connection.createStatement();
     }
 
-    public void readToDB(File inputFile){
+    public void readToDB(){
         createTable();
 
         try {
-            String sql = "LOAD DATA LOCAL INFILE 'src/ACTSTAT.csv' INTO TABLE ACTSTAT" +
-                    "    FIELDS TERMINATED BY ','" +
-                    "    ENCLOSED BY '\"'" +
-                    "    LINES TERMINATED BY '\\r\\n'" +
-                    "    IGNORE 1 LINES" +
-                    "    (ACTSTATID, NAME);";
+            String sql = "LOAD DATA INFILE 'C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/ACTSTAT.csv' INTO TABLE ACTSTAT " +
+                    "COLUMNS TERMINATED BY ',' " +
 
-            statement.executeUpdate(sql);
+                    "LINES TERMINATED BY '\\N';";
+
+            System.out.println(statement.executeUpdate(sql));
         } catch(SQLException e){
             System.out.println("Error while writing data.");
             e.printStackTrace();
