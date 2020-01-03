@@ -26,7 +26,7 @@ public class MySQLConnection {
     public void readToDB(String table, String path){
         try {
             String sql = "LOAD DATA INFILE '" + path + table + ".csv'" + " INTO TABLE " + table +
-                    " COLUMNS TERMINATED BY ','" +
+                    " COLUMNS TERMINATED BY ';'" +
                     " LINES TERMINATED BY '\\r\n';";
 
             System.out.println(statement.executeUpdate(sql));

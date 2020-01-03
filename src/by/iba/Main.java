@@ -19,10 +19,76 @@ public class Main {
             }
         }
 
-        if(parser.parseToCSV("DEL_ADDROBJ", inPath, outPath)) {
+        /*if(parser.parseToCSV("ADDROB", inPath, outPath)) {
+            try {
+                MySQLConnection database = new MySQLConnection();
+                database.readToDB("ADDROB", outPath);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }*/
+
+              if(parser.parseToCSV("CENTERST", inPath, outPath)) {
             try {
                MySQLConnection database = new MySQLConnection();
-               database.readToDB("DEL_ADDROBJ", outPath);
+               database.readToDB("CENTERST", outPath);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+               if(parser.parseToCSV("CURENTST", inPath, outPath)) {
+            try {
+               MySQLConnection database = new MySQLConnection();
+               database.readToDB("CURENTST", outPath);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+
+           /*   if(parser.parseToCSV("DADDROB", inPath, outPath)) {
+            try {
+               MySQLConnection database = new MySQLConnection();
+               database.readToDB("DADDROB", outPath);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }*/
+        if(parser.parseToCSV("ESTSTAT", inPath, outPath)) {
+            try {
+                MySQLConnection database = new MySQLConnection();
+                database.readToDB("ESTSTAT", outPath);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        if(parser.parseToCSV("FLATTYPE", inPath, outPath)) {
+            try {
+                MySQLConnection database = new MySQLConnection();
+                database.readToDB("FLATTYPE", outPath);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        if(parser.parseToCSV("HSTSTAT", inPath, outPath)) {
+            try {
+                MySQLConnection database = new MySQLConnection();
+                database.readToDB("HSTSTAT", outPath);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        if(parser.parseToCSV("INTVSTAT", inPath, outPath)) {
+            try {
+                MySQLConnection database = new MySQLConnection();
+                database.readToDB("INTVSTAT", outPath);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        if(parser.parseToCSV("NDOCTYPE", inPath, outPath)) {
+            try {
+                MySQLConnection database = new MySQLConnection();
+                database.readToDB("NDOCTYPE", outPath);
             } catch (Exception e){
                 e.printStackTrace();
             }
