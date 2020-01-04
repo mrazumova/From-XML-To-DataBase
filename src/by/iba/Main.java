@@ -17,19 +17,17 @@ public class Main {
         StAXParser parser = new StAXParser();
 
         for (String file : files){
-            long time = System.currentTimeMillis();
-            if(parser.parseToCSV(file, inPath, outPath)) {
+            try {
+                long time = System.currentTimeMillis();
+                parser.parse(file, inPath, outPath);
                 System.out.print("File " + file + " parsed in " + (System.currentTimeMillis() - time));
-                try {
-                    MySQLConnection database = new MySQLConnection();
-                    time = System.currentTimeMillis();
-                    database.readToDB(file, outPath);
-                    System.out.println(", wrote in " + (System.currentTimeMillis() - time));
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
+                MySQLConnection database = new MySQLConnection();
+                time = System.currentTimeMillis();
+                database.readToDB(file, outPath);
+                System.out.println(", wrote in " + (System.currentTimeMillis() - time));
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
-
     }
 }

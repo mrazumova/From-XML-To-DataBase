@@ -1,44 +1,32 @@
 package by.iba.parser;
 
-import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import java.io.FileInputStream;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamReader;
 import java.io.FileWriter;
-import java.util.Iterator;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class StAXParser {
 
-    public boolean parseToCSV(String dataName, String inPath, String outPath){
-        try{
-            XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(inPath + dataName + ".xml"));
-            FileWriter writer = new FileWriter(outPath + dataName + ".csv");
-            while (reader.hasNext()){
-                XMLEvent event = reader.nextEvent();
-                if(event.isStartElement()){
-                    StartElement startElement = event.asStartElement();
-                    Iterator<Attribute> attributeIterator = startElement.getAttributes();
-                    while (attributeIterator.hasNext()){
-                        Attribute attribute = attributeIterator.next();
-                        writer.append(attribute.getValue());
-                        if (attributeIterator.hasNext()){
-                            writer.append(';');
-                        }
-                        else{
-                            writer.append('\n');
-                        }
-                    }
+    public void parse(String dataName, String inPath, String outPath) throws Exception{
+        XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(Files.newInputStream(Paths.get(inPath + dataName + ".xml")));
+        FileWriter writer = new FileWriter(outPath + dataName + ".csv");
+        reader.next();
+        while (reader.hasNext()) {
+            int event = reader.next();
+            if (event ==  XMLStreamConstants.START_ELEMENT) {
+                int num = reader.getAttributeCount() - 1;
+                for (int i = 0; i < num; ++i){
+                    writer.append(reader.getAttributeValue(i));
+                    writer.append(';');
                 }
+                writer.append(reader.getAttributeValue(num));
+                writer.append('\n');
             }
-            writer.flush();
-            writer.close();
-        }catch(Exception e){
-            e.printStackTrace();
         }
-        return true;
+        writer.flush();
+        writer.close();
     }
-
 }
+
