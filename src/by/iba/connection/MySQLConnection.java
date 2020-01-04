@@ -1,8 +1,5 @@
 package by.iba.connection;
 
-import by.iba.parser.XMLParser;
-
-import javax.swing.table.TableCellEditor;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,7 +7,7 @@ import java.sql.Statement;
 
 public class MySQLConnection {
 
-    public static final String DB_URL = "jdbc:mysql://localhost/FIAS";
+    public static final String DB_URL = "jdbc:mysql://localhost:3306/FIAS?useSSL=false&useUnicode=yes&allowPublicKeyRetrieval=true&characterEncoding=UTF-8&allowLoadLocalInfile=true";
     public static final String USER = "root";
     public static final String PASS = "root";
 
@@ -25,11 +22,11 @@ public class MySQLConnection {
 
     public void readToDB(String table, String path){
         try {
-            String sql = "LOAD DATA INFILE '" + path + table + ".csv'" + " INTO TABLE " + table +
+            String sql = "LOAD DATA LOCAL INFILE '" + path + table + ".csv'" + " INTO TABLE " + table +
                     " COLUMNS TERMINATED BY ';'" +
-                    " LINES TERMINATED BY '\\r\n';";
+                    " LINES TERMINATED BY '\\n';";
 
-            System.out.println(statement.executeUpdate(sql));
+            statement.executeUpdate(sql);
         } catch(SQLException e){
             System.out.println("Error while writing data.");
             e.printStackTrace();
