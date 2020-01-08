@@ -17,8 +17,8 @@ public class XMLParser {
         while (reader.hasNext()) {
             int event = reader.next();
             if (event ==  XMLStreamConstants.START_ELEMENT) {
-                int num = reader.getAttributeCount() - 1;
-                for(int j = 0; j < columns.size() - 1; ++j){
+                int num = reader.getAttributeCount();
+                for(int j = 0; j < columns.size(); ++j){
                     boolean f = true;
                     for (int i = 0; i < num && f; ++i){
                         if (columns.get(j).equals(reader.getAttributeName(i).toString())){
@@ -28,7 +28,6 @@ public class XMLParser {
                     }
                     writer.append(';');
                 }
-                writer.append(reader.getAttributeValue(num));
                 writer.append('\n');
             }
         }
