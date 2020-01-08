@@ -1,32 +1,39 @@
 package by.iba.parser;
 
-import org.w3c.dom.Document;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.*;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-import java.io.File;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamReader;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class XMLParser {
 
-    public boolean parseToCSV(String dataName, String inPath, String outPath){
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(new File((inPath + dataName + ".xml")));
-
-            StreamSource stylesource = new StreamSource(new File("src/" + dataName + ".xsl"));
-            Transformer transformer = TransformerFactory.newInstance().newTransformer(stylesource);
-            Source source = new DOMSource(document);
-            Result outputTarget = new StreamResult(new File(outPath + dataName + ".csv"));
-            transformer.transform(source, outputTarget);
-        }catch (Exception e){
-            e.printStackTrace();
+    public void parse(ArrayList<String> columns, String dataName, String inPath, String outPath) throws Exception{
+        XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(Files.newInputStream(Paths.get(inPath + dataName + ".xml")));
+        FileWriter writer = new FileWriter(outPath + dataName + ".csv");
+        reader.next();
+        while (reader.hasNext()) {
+            int event = reader.next();
+            if (event ==  XMLStreamConstants.START_ELEMENT) {
+                int num = reader.getAttributeCount() - 1;
+                for(int j = 0; j < columns.size() - 1; ++j){
+                    boolean f = true;
+                    for (int i = 0; i < num && f; ++i){
+                        if (columns.get(j).equals(reader.getAttributeName(i).toString())){
+                            writer.append(reader.getAttributeValue(i));
+                            f = false;
+                        }
+                    }
+                    writer.append(';');
+                }
+                writer.append(reader.getAttributeValue(num));
+                writer.append('\n');
+            }
         }
-        return true;
+        writer.flush();
+        writer.close();
     }
-
 }
+

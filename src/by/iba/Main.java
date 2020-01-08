@@ -1,33 +1,45 @@
 package by.iba;
 
 import by.iba.connection.MySQLConnection;
-import by.iba.parser.StAXParser;
+import by.iba.parser.XMLParser;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
+import java.util.ArrayList;
 
 public class Main {
 
-    public static String outPath = "C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/";
-    public static String inPath = "C:/Users/Razumava_M/IdeaProjects/Data/";
-
-    public static String[] files  = {"ACTSTAT","ADDROB","CENTERST","CURENTST",
-            "DADDROB","ESTSTAT","FLATTYPE","HOUSE","HSTSTAT","INTVSTAT","NDOCTYPE",
-            "NORDOC", "OPERSTAT", "ROOM", "SOCRBASE", "STEAD", "STRSTAT"
-    };
-
     public static void main(String[] args) {
-        StAXParser parser = new StAXParser();
+        PropertyConfigurator.configure("log4j.properties");
+        BasicConfigurator.configure();
+        Logger logger = Logger.getLogger(Main.class);
+        try{
 
-        for (String file : files){
-            try {
-                long time = System.currentTimeMillis();
-                parser.parse(file, inPath, outPath);
-                System.out.print("File " + file + " parsed in " + (System.currentTimeMillis() - time));
-                MySQLConnection database = new MySQLConnection();
-                time = System.currentTimeMillis();
-                database.readToDB(file, outPath);
-                System.out.println(", wrote in " + (System.currentTimeMillis() - time));
-            }catch (Exception e){
-                e.printStackTrace();
+            XMLParser parser = new XMLParser();
+            MySQLConnection database = new MySQLConnection();
+            logger.info("Connected to database.");
+            String[] files  = AppProperties.INSTANCE.getFiles();
+
+            for (String file : files){
+                try {
+                    ArrayList<String> columns = database.getColumns(file);
+                    long time = System.currentTimeMillis();
+                    parser.parse(columns, file, AppProperties.INSTANCE.getXMLPath(), AppProperties.INSTANCE.getCSVPath());
+                    logger.info("File " + file + " parsed in " + (System.currentTimeMillis() - time));
+                    time = System.currentTimeMillis();
+                    database.readToDB(file, AppProperties.INSTANCE.getCSVPath());
+                    logger.info("File " + file + " wrote in " + (System.currentTimeMillis() - time));
+                }catch (Exception e){
+                    e.printStackTrace();
+                    logger.error(e.getMessage());
+                }
             }
         }
+        catch (Exception e){
+            logger.error(e.getMessage());
+        }
+
     }
+
 }
