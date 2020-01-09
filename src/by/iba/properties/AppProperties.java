@@ -1,5 +1,7 @@
 package by.iba.properties;
 
+import org.apache.log4j.Logger;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -11,8 +13,10 @@ public enum AppProperties {
     AppProperties() {
         properties = new Properties();
         try {
-            properties.load(new FileInputStream("app.properties"));
-        } catch (IOException e) {}
+            properties.load(new FileInputStream("src/app.properties"));
+        } catch (IOException e) {
+            Logger.getLogger(AppProperties.class.getName()).error(e.toString());
+        }
     }
 
     public String getDriver() {
@@ -40,6 +44,6 @@ public enum AppProperties {
     }
 
     public String[] getFiles(){
-        return properties.getProperty("files").toString().split(";");
+        return properties.getProperty("files").split(";");
     }
 }
