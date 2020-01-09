@@ -1,4 +1,4 @@
-package by.iba;
+package by.iba.properties;
 
 import java.io.FileInputStream;
 import java.io.IOException;

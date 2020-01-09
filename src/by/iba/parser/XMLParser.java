@@ -19,11 +19,10 @@ public class XMLParser {
             if (event ==  XMLStreamConstants.START_ELEMENT) {
                 int num = reader.getAttributeCount();
                 for(int j = 0; j < columns.size(); ++j){
-                    boolean f = true;
-                    for (int i = 0; i < num && f; ++i){
+                    for (int i = 0; i < num; ++i){
                         if (columns.get(j).equals(reader.getAttributeName(i).toString())){
                             writer.append(reader.getAttributeValue(i));
-                            f = false;
+                            break;
                         }
                     }
                     writer.append(';');
