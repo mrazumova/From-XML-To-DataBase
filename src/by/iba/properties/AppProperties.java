@@ -6,44 +6,47 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public enum AppProperties {
-    INSTANCE;
-    private final Properties properties;
+public class AppProperties {
 
-    AppProperties() {
-        properties = new Properties();
+    private static Properties properties = new Properties();
+
+    static {
         try {
-            properties.load(new FileInputStream("src/app.properties"));
+            properties.load(new FileInputStream("src/newapp.properties"));
         } catch (IOException e) {
-            Logger.getLogger(AppProperties.class.getName()).error(e.toString());
+            e.printStackTrace();
         }
     }
 
-    public String getDriver() {
+    public static String getDatabaseType(){
+        return properties.getProperty("db_type");
+    }
+
+    public static String getDriver() {
         return properties.getProperty("db_driver");
     }
 
-    public String getURL(){
+    public static String getURL(){
         return properties.getProperty("db_url");
     }
 
-    public String getUser(){
+    public static String getUser(){
         return properties.getProperty("user");
     }
 
-    public String getPassword(){
+    public static String getPassword(){
         return properties.getProperty("password");
     }
 
-    public String getXMLPath(){
+    public static String getXMLPath(){
         return properties.getProperty("xml_path");
     }
 
-    public String getCSVPath(){
+    public static String getCSVPath(){
         return properties.getProperty("csv_path");
     }
 
-    public String[] getFiles(){
+    public static String[] getFiles(){
         return properties.getProperty("files").split(";");
     }
 }
