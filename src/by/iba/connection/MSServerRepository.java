@@ -39,7 +39,7 @@ public class MSServerRepository implements Repository {
     public void loadFile(String table, String path) throws SQLException {
         long time = System.currentTimeMillis();
 
-        String sql = "";
+        String sql = "BULK INSERT ";
 
         statement.executeUpdate(sql);
 
