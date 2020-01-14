@@ -39,10 +39,25 @@ public class MSServerRepository implements Repository {
     public void loadFile(String table, String path) throws SQLException {
         long time = System.currentTimeMillis();
 
-        String sql = "BULK INSERT ";
+        String sql = "BULK INSERT " + table +
+                " FROM '" + path + table + ".csv'" +
+                " WITH (FIELDTERMINATOR = ';'," +
+                "    ROWTERMINATOR='0x0a'," +
+                "    CODEPAGE = 'utf8');";
 
         statement.executeUpdate(sql);
 
         logger.info("File " + table + " loaded into database in " + (System.currentTimeMillis() - time));
+    }
+
+    @Override
+    public void close(){
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.error(e.getMessage());
+            }
+        }
     }
 }

@@ -11,13 +11,14 @@ public class Main {
     private static Logger logger = Logger.getLogger(Main.class);
 
     public static void main(String[] args) {
+        Repository repository = null;
+        XMLParser parser;
         try{
-            XMLParser parser = new XMLParser();
+            parser = new XMLParser();
             //get files names
             String[] files  = AppProperties.getFiles();
             //get connection to database
-            Repository repository = RepositoryFactory.getRepository(AppProperties.getDatabaseType());
-
+            repository = RepositoryFactory.getRepository(AppProperties.getDatabaseType());
             for (String file : files){
                 try {
                     // parse to CSV
@@ -34,6 +35,10 @@ public class Main {
         catch (Exception e){
             e.printStackTrace();
             logger.error(e.toString());
+        }
+        finally {
+            //close connection
+            repository.close();
         }
     }
 }
