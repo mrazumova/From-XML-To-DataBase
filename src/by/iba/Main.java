@@ -21,13 +21,14 @@ public class Main {
             repository = RepositoryFactory.getRepository(AppProperties.getDatabaseType());
             for (String file : files){
                 try {
-                    // parse to CSV
+                    //parse to CSV
                     parser.parse(repository.getColumns(file), file, AppProperties.getXMLPath(), AppProperties.getCSVPath());
                     //insert into database
                     repository.loadFile(file, AppProperties.getCSVPath());
                 }catch (Exception e){
                     e.printStackTrace();
                     logger.error(e.toString());
+
                 }
             }
             logger.info("Done.");
