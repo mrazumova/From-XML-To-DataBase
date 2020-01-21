@@ -39,7 +39,7 @@ public class MySQLRepository implements Repository {
 
         String sql = "LOAD DATA LOCAL INFILE '" + path
                 + table + ".csv'" + " INTO TABLE " + table +
-                " COLUMNS TERMINATED BY ';'" +
+                " COLUMNS TERMINATED BY '~~'" +
                 " LINES TERMINATED BY '\\n';";
 
         statement.executeUpdate(sql);

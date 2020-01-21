@@ -42,7 +42,8 @@ public class XMLParser{
                     break;
                 }
             }
-            writer.append(';');
+            if (j != columns.size() - 1)
+                writer.append("~~");
         }
     }
 }

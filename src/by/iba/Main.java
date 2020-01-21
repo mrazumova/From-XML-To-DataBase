@@ -22,7 +22,8 @@ public class Main {
             for (String file : files){
                 try {
                     //parse to CSV
-                    parser.parse(repository.getColumns(file), file, AppProperties.getXMLPath(), AppProperties.getCSVPath());
+                    if(!AppProperties.isParsed())
+                        parser.parse(repository.getColumns(file), file, AppProperties.getXMLPath(), AppProperties.getCSVPath());
                     //insert into database
                     repository.loadFile(file, AppProperties.getCSVPath());
                 }catch (Exception e){

@@ -17,7 +17,7 @@ public class AppProperties {
     }
 
     public static String getDatabaseType(){
-        return properties.getProperty("db_type");
+        return properties.getProperty("db_type").toLowerCase();
     }
 
     public static String getDriver() {
@@ -46,5 +46,9 @@ public class AppProperties {
 
     public static String[] getFiles(){
         return properties.getProperty("files").split(";");
+    }
+
+    public static boolean isParsed(){
+        return Boolean.parseBoolean(properties.getProperty("is_parsed"));
     }
 }
