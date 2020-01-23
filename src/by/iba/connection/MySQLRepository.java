@@ -34,12 +34,12 @@ public class MySQLRepository implements Repository {
     }
 
     @Override
-    public void loadFile(String table, String path) throws SQLException{
+    public void loadFile(String table, String path, String separator) throws SQLException{
         long time = System.currentTimeMillis();
 
         String sql = "LOAD DATA LOCAL INFILE '" + path
                 + table + ".csv'" + " INTO TABLE " + table +
-                " COLUMNS TERMINATED BY '~~'" +
+                " COLUMNS TERMINATED BY '" + separator + "'" +
                 " LINES TERMINATED BY '\\n';";
 
         statement.executeUpdate(sql);

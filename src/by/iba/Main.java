@@ -23,9 +23,9 @@ public class Main {
                 try {
                     //parse to CSV
                     if(!AppProperties.isParsed())
-                        parser.parse(repository.getColumns(file), file, AppProperties.getXMLPath(), AppProperties.getCSVPath());
+                        parser.parse(repository.getColumns(file), file, AppProperties.getXMLPath(), AppProperties.getCSVPath(), AppProperties.getSeparator());
                     //insert into database
-                    repository.loadFile(file, AppProperties.getCSVPath());
+                    repository.loadFile(file, AppProperties.getCSVPath(), AppProperties.getSeparator());
                 }catch (Exception e){
                     e.printStackTrace();
                     logger.error(e.toString());

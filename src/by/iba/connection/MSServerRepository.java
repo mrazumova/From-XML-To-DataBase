@@ -37,12 +37,12 @@ public class MSServerRepository implements Repository {
     }
 
     @Override
-    public void loadFile(String table, String path) throws SQLException {
+    public void loadFile(String table, String path, String separator) throws SQLException {
         long time = System.currentTimeMillis();
 
         String sql = "BULK INSERT " + table +
                 " FROM '" + path + table + ".csv'" +
-                " WITH (FIELDTERMINATOR='~~'," +
+                " WITH (FIELDTERMINATOR='" + separator + "'," +
                 "    ROWTERMINATOR='\n'," +
                 "    MAXERRORS=9999999," +
                 "    CODEPAGE='utf8'," +

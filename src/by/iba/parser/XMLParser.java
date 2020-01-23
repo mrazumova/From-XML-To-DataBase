@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class XMLParser{
     private Logger logger = Logger.getLogger(XMLParser.class);
 
-    public void parse(ArrayList<String> columns, String dataName, String inPath, String outPath) throws Exception{
+    public void parse(ArrayList<String> columns, String dataName, String inPath, String outPath, String separator) throws Exception{
         long time = System.currentTimeMillis();
 
         XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(Files.newInputStream(Paths.get(inPath + dataName + ".xml")));
@@ -23,7 +23,7 @@ public class XMLParser{
         while (reader.hasNext()) {
             int event = reader.next();
             if (event ==  XMLStreamConstants.START_ELEMENT) {
-                readRow(reader, writer, columns);
+                readRow(reader, writer, columns, separator);
                 writer.append('\n');
             }
         }
@@ -33,7 +33,7 @@ public class XMLParser{
         logger.info("File " + dataName + " parsed in " + (System.currentTimeMillis() - time));
     }
 
-    private void readRow(XMLStreamReader reader, FileWriter writer, ArrayList<String> columns) throws IOException {
+    private void readRow(XMLStreamReader reader, FileWriter writer, ArrayList<String> columns, String separator) throws IOException {
         int num = reader.getAttributeCount();
         for(int j = 0; j < columns.size(); ++j){
             for (int i = 0; i < num; ++i){
@@ -43,7 +43,7 @@ public class XMLParser{
                 }
             }
             if (j != columns.size() - 1)
-                writer.append("~~");
+                writer.append(separator);
         }
     }
 }

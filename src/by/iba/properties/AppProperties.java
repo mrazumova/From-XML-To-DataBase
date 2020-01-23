@@ -51,4 +51,8 @@ public class AppProperties {
     public static boolean isParsed(){
         return Boolean.parseBoolean(properties.getProperty("is_parsed"));
     }
+
+    public static String getSeparator(){
+        return properties.getProperty("separator");
+    }
 }
