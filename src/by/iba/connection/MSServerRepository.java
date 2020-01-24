@@ -4,8 +4,11 @@ import by.iba.exception.EmptyTableException;
 import by.iba.properties.AppProperties;
 import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class MSServerRepository implements Repository {
 
@@ -13,20 +16,20 @@ public class MSServerRepository implements Repository {
 
     private Statement statement;
 
-    private Logger logger = Logger.getLogger(MySQLRepository.class);
+    public static final Logger logger = Logger.getLogger(MSServerRepository.class);
 
     protected MSServerRepository() throws Exception{
         Class.forName(AppProperties.getDriver());
-        connection = DriverManager.getConnection(AppProperties.getURL(), AppProperties.getUser(), AppProperties.getPassword());
+        connection = DriverManager.getConnection(AppProperties.getURL());
         statement = connection.createStatement();
-        logger.info("Connected to database.");
+        logger.info("Connected to Microsoft SQL Server database.");
     }
+
     @Override
-    public ArrayList<String> getColumns(String table) throws SQLException, EmptyTableException {
+    public ArrayList<String> getColumns(String table) throws SQLException, EmptyTableException, FileNotFoundException {
         ArrayList<String> columns = new ArrayList<>();
-        PreparedStatement stmt = connection.prepareStatement("SELECT COLUMN_NAME\n" +
-                " FROM INFORMATION_SCHEMA.COLUMNS\n" +
-                " WHERE TABLE_NAME LIKE '" + table + "';");
+        String sql = getSQL("getcolsmsserver.sql").replace("table", table);
+        PreparedStatement stmt = connection.prepareStatement(sql);
         ResultSet set = stmt.executeQuery();
         while (set.next()){
             columns.add(set.getString(1));
@@ -37,20 +40,16 @@ public class MSServerRepository implements Repository {
     }
 
     @Override
-    public void loadFile(String table, String path, String separator) throws SQLException {
+    public int loadFile(String table) throws SQLException, FileNotFoundException {
         long time = System.currentTimeMillis();
+        String sql = getSQL("loadmsserver.sql").replace("table", table)
+                .replace("path", AppProperties.getCSVPath())
+                .replace("separator", AppProperties.getSeparator());
 
-        String sql = "BULK INSERT " + table +
-                " FROM '" + path + table + ".csv'" +
-                " WITH (FIELDTERMINATOR='" + separator + "'," +
-                "    ROWTERMINATOR='\n'," +
-                "    MAXERRORS=9999999," +
-                "    CODEPAGE='utf8'," +
-                "    ERRORFILE = '" + path + table + "errors.txt');";
+        int rows = statement.executeUpdate(sql);
 
-        statement.executeUpdate(sql);
-
-        logger.info("File " + table + " loaded into database in " + (System.currentTimeMillis() - time));
+        logger.info("File " + table + " loaded into database in " + (System.currentTimeMillis() - time)+ ", number of records: " + rows);
+        return rows;
     }
 
     @Override
@@ -60,8 +59,17 @@ public class MSServerRepository implements Repository {
                 connection.close();
                 logger.info("Connection is closed.");
             } catch (SQLException e) {
-                logger.error(e.getMessage());
+                logger.error(e);
             }
+        }
+    }
+
+    private String getSQL(String s) throws FileNotFoundException {
+        try{
+            Scanner sc = new Scanner(new File("config/" + s));
+            return sc.nextLine();
+        }catch (Exception e){
+            throw new FileNotFoundException("SQL source file not found.");
         }
     }
 }

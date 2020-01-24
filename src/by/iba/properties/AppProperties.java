@@ -8,9 +8,10 @@ public class AppProperties {
 
     private static Properties properties = new Properties();
 
-    static {
+    static{
+
         try {
-            properties.load(new FileInputStream("src/newapp.properties"));
+            properties.load(new FileInputStream("config/app.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -48,8 +49,12 @@ public class AppProperties {
         return properties.getProperty("files").split(";");
     }
 
-    public static boolean isParsed(){
-        return Boolean.parseBoolean(properties.getProperty("is_parsed"));
+    public static boolean parseToCSV(){
+        return Boolean.parseBoolean(properties.getProperty("parse_to_csv"));
+    }
+
+    public static boolean loadToDB(){
+        return Boolean.parseBoolean(properties.getProperty("load_to_db"));
     }
 
     public static String getSeparator(){

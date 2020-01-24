@@ -1,0 +1,1 @@
+BULK INSERT table FROM 'pathtable.csv' WITH (FIELDTERMINATOR='separator', ROWTERMINATOR='\n', MAXERRORS=9999999, CODEPAGE='utf8', ERRORFILE = 'pathtableerrors.txt');

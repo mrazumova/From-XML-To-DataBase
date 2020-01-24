@@ -12,7 +12,7 @@ public class RepositoryFactory {
                 repository = new MSServerRepository();
                 break;
             default:
-                throw new IllegalArgumentException("Wrong database type:" + type + ".\n");
+                throw new IllegalArgumentException("Wrong database type: " + type + ".\n");
         }
         return repository;
     }
