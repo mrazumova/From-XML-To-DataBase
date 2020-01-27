@@ -7,6 +7,7 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class XMLParser{
         long time = System.currentTimeMillis();
         int records = 0;
         XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(Files.newInputStream(Paths.get(AppProperties.getXMLPath() + dataName + ".xml")));
-        FileWriter writer = new FileWriter(AppProperties.getCSVPath() + dataName + ".csv");
+        FileWriter writer = new FileWriter(AppProperties.getCSVPath() + dataName + ".csv", StandardCharsets.UTF_8);
         reader.next();
         while (reader.hasNext()) {
             int event = reader.next();
