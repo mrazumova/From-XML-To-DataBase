@@ -40,7 +40,7 @@ load_to_db=false
 separator=~
 ```
 
-In log4j.properties you should only path to log file.
+In log4j.properties you should change only path to log file.
 
 ## Contributing
 
