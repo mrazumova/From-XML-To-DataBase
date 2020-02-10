@@ -20,7 +20,7 @@ Properties file app .properties example:
 version=1.0
 #Available values: mysql, msserver
 db_type=mysql
-#Connection settings
+#Connection settings (db driver for ms sql server: com.microsoft.sqlserver.jdbc.SQLServerDriver)
 db_driver=com.mysql.cj.jdbc.Driver
 db_url=jdbc:mysql://localhost:3306/MyDB
 user=usr
