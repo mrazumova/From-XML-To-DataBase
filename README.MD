@@ -8,7 +8,7 @@ Available databases: MySQL, MS SQL Server.
 
 Download parser_jar.
 
-Change file app.properties according your system configuration and goals.
+Change properties in app.properties file according your system configuration and goals.
 
 Run start.bat.
 
