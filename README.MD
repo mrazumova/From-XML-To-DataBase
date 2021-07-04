@@ -14,7 +14,7 @@ Run start.bat.
 
 ## Configurations
 
-Properties file app .properties example:
+Properties file app.properties example:
 
 ```properties
 version=1.0
